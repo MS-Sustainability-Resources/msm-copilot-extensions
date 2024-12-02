@@ -1,0 +1,105 @@
+kind: AdaptiveDialog
+modelDescription: Any questions on Microsoft cloud for sustainability or Microsoft sustainability manager(msm). Any requests for technical or latest information on Microsoft sustainability manager
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - Microsoft cloud for sustainability
+      - Microsoft sustainability manager
+      - msm
+
+  actions:
+    - kind: SetVariable
+      id: setVariable_fuD1nH
+      variable: Topic.OriginalStatement
+      value: =System.Activity.Text
+
+    - kind: SendActivity
+      id: sendActivity_8H0bBi
+      activity: Please wait. We are getting the answer for you.
+
+    - kind: SearchAndSummarizeContent
+      id: 0ogEj8
+      userInput: =Topic.OriginalStatement
+      autoSend: false
+      variable: Topic.LLMResponse
+      additionalInstructions: |-
+        Answer in bulleted points.
+        Add reference links to your answers.
+      publicDataSource:
+        kind: BingCustomSearchDataSource
+        customConfigurationId: 3e64f840-6c03-453f-9f6e-b15665b3e45a
+
+      sharePointSearchDataSource: {}
+      customDataSource: {}
+      fileSearchDataSource:
+        searchFilesMode:
+          kind: SearchAllFiles
+
+      knowledgeSources:
+        kind: SearchAllKnowledgeSources
+
+      responseCaptureType: FullResponse
+
+    - kind: SendActivity
+      id: sendActivity_etNWWb
+      activity:
+        attachments:
+          - kind: AdaptiveCardTemplate
+            cardContent: |-
+              ={
+               type: "AdaptiveCard",
+               '$schema': "http://adaptivecards.io/schemas/adaptive-card.json",
+               version: "1.5",
+               body: [
+               {
+               type: "Container",
+               items: [
+               {
+               type: "TextBlock",
+               text: Topic.LLMResponse.Text.Content,
+               wrap: true
+               }
+               ]
+               },
+               {
+               type: "Container",
+               items: ForAll(Topic.LLMResponse.Text.CitationSources,
+               {
+               type: "TextBlock",
+               text: "[" & Id &"]: [" & Name & "](" & Url & ")",
+               wrap: true,
+               size: "Small",
+               weight: "Lighter"
+               }
+               )
+               },
+               {
+               type: "Container",
+               items: [
+               {
+               type: "ColumnSet",
+               columns: [
+               {
+               type: "Column",
+               width: "90",
+               items: [
+               {
+               type: "TextBlock",
+               text: "AI-generated answer.",
+               wrap: true,
+               size: "Small",
+               color: "Accent"
+               }
+               ]
+               }
+               ]
+               }
+               ]
+               }
+               ]
+              }
+
+    - kind: CancelAllDialogs
+      id: ogs2dt

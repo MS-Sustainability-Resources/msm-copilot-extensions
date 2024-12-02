@@ -1,0 +1,218 @@
+kind: AdaptiveDialog
+modelDescription: Any questions specific to errors or problems Microsoft sustainability manager(msm)
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - calculations
+      - emissions
+      - sustainability
+      - Microsoft cloud for sustainability
+      - Microsoft sustainability manager
+      - msm
+      - MSM errors
+
+  actions:
+    - kind: ClearAllVariables
+      id: w7cTMo
+
+    - kind: SetVariable
+      id: setVariable_fuD1nH
+      variable: Topic.OriginalStatement
+      value: =System.Activity.Text
+
+    - kind: SendActivity
+      id: sendActivity_jsSwbF
+      activity: Welcome to Microsof Sustainability Manager Support
+
+    - kind: Question
+      id: question_x7kGWa
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.UserErrChoice
+      prompt: Would you like to check for specific errors in Microsoft Cloud for Sustainability products in  your environment?
+      entity: BooleanPrebuiltEntity
+
+    - kind: ConditionGroup
+      id: conditionGroup_ZzKBak
+      conditions:
+        - id: conditionItem_q7Cg7H
+          condition: =Topic.UserErrChoice = true
+
+      elseActions:
+        - kind: GotoAction
+          id: egxDyc
+          actionId: question_XgUekW
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_OVhKuZ
+      input: {}
+      output:
+        binding:
+          errormsgs: Topic.ErrorMsgs
+
+      flowId: 3ca18052-205e-ef11-bfe3-000d3a100af5
+
+    - kind: ParseValue
+      id: yKYFX8
+      variable: Topic.ParsedError
+      valueType:
+        kind: Record
+        properties:
+          name:
+            type:
+              kind: Table
+              properties:
+                Value: String
+
+      value: =Topic.ErrorMsgs
+
+    - kind: Question
+      id: question_i9PZe5
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: Global.SelectedError
+      prompt: Please select the error message you wish to check
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Topic.ParsedError.name
+
+    - kind: ConditionGroup
+      id: conditionGroup_0ZuWwy
+      conditions:
+        - id: conditionItem_sqT8da
+          condition: =Global.SelectedError <> "None of these"
+
+      elseActions:
+        - kind: Question
+          id: question_XgUekW
+          interruptionPolicy:
+            allowInterruption: true
+
+          variable: Topic.customError
+          prompt: Please enter the error you would like to check
+          entity: StringPrebuiltEntity
+
+    - kind: SetVariable
+      id: setVariable_x2GXU6
+      variable: Global.UserChosenError
+      value: =If(IsBlank(Topic.customError) And IsBlank(Global.SelectedError),Topic.OriginalStatement,If(IsBlank(Topic.customError),Concatenate(Topic.OriginalStatement),Topic.customError))
+
+    - kind: SendActivity
+      id: sendActivity_8H0bBi
+      activity: Please wait. We are getting the answer for you. {Global.UserChosenError}
+
+    - kind: SearchAndSummarizeContent
+      id: sN8uh6
+      userInput: =Global.UserChosenError
+      autoSend: false
+      variable: Topic.LLMResponse
+      publicDataSource:
+        kind: BingCustomSearchDataSource
+        customConfigurationId: 3e64f840-6c03-453f-9f6e-b15665b3e45a
+
+      responseCaptureType: FullResponse
+
+    - kind: SendActivity
+      id: sendActivity_etNWWb
+      activity:
+        attachments:
+          - kind: AdaptiveCardTemplate
+            cardContent: |-
+              ={
+               type: "AdaptiveCard",
+               '$schema': "http://adaptivecards.io/schemas/adaptive-card.json",
+               version: "1.5",
+               body: [
+               {
+               type: "Container",
+               items: [
+               {
+               type: "TextBlock",
+               text: Topic.LLMResponse.Text.Content,
+               wrap: true
+               }
+               ]
+               },
+               {
+               type: "Container",
+               items: ForAll(Topic.LLMResponse.Text.CitationSources,
+               {
+               type: "TextBlock",
+               text: "[" & Id &"]: [" & Name & "](" & Url & ")",
+               wrap: true,
+               size: "Small",
+               weight: "Lighter"
+               }
+               )
+               },
+               {
+               type: "Container",
+               items: [
+               {
+               type: "ColumnSet",
+               columns: [
+               {
+               type: "Column",
+               width: "90",
+               items: [
+               {
+               type: "TextBlock",
+               text: "AI-generated answer.",
+               wrap: true,
+               size: "Small",
+               color: "Accent"
+               }
+               ]
+               }
+               ]
+               }
+               ]
+               }
+               ]
+              }
+
+    - kind: ConditionGroup
+      id: conditionGroup_dXErYE
+      conditions:
+        - id: conditionItem_59OnAm
+          condition: |
+            =If((Find("unknown", Global.SelectedError) > 0) And (Find("Type", Global.SelectedError) > 0), true, false)
+          displayName: Check Error
+          actions:
+            - kind: Question
+              id: question_6nUCPQ
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.InvestigateIngErr
+              prompt: Would you like to investigate this error further?
+              entity: BooleanPrebuiltEntity
+
+            - kind: ConditionGroup
+              id: conditionGroup_YAA6fv
+              conditions:
+                - id: conditionItem_KqIf8m
+                  condition: =Topic.InvestigateIngErr = true
+
+              elseActions:
+                - kind: EndDialog
+                  id: IlDcmu
+
+            - kind: BeginDialog
+              id: BuEZW0
+              dialog: msdyn_sustainabilityCopilot.topic.Ingestionerrorresolver
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_Vlp9E5
+          activity: Thank you
+
+        - kind: CancelAllDialogs
+          id: KWeMiG
+
+    - kind: EndDialog
+      id: Yuz6uu

@@ -1,0 +1,20 @@
+[
+  {
+    "productname": "Product A",
+    "salesrevenue": 15000.50,
+    "priority": 1,
+    "owningteam": "Team Alpha"
+  },
+  {
+    "productname": "Product B",
+    "salesrevenue": 25000.75,
+    "priority": 2,
+    "owningteam": "Team Beta"
+  },
+  {
+    "productname": "Product C",
+    "salesrevenue": 10000.00,
+    "priority": 3,
+    "owningteam": "Team Gamma"
+  }
+]

@@ -1,0 +1,210 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: SendActivity
+      id: sendActivity_oa9iX1
+      activity: Welcome to Microsoft Sustainability manager Ingestion error resolver. Please wait while we check the error.
+
+    - kind: InvokeAIBuilderModelAction
+      id: invokeAIBuilderModelAction_8P3vRt
+      input:
+        binding:
+          input_20text: =Global.SelectedError
+
+      output:
+        binding:
+          predictionOutput: Topic.ReferenceData
+
+      aIModelId: c4f15d7d-a684-4d5d-94aa-4a078c60d814
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_EyqO5y
+      input:
+        binding:
+          text: =Global.SelectedError
+
+      output:
+        binding:
+          connectionid: Topic.ConnectionId
+          connectionrefershid: Topic.ConnectionRefreshId
+
+      flowId: 7b8a02fb-0575-ef11-a671-7c1e521b40e3
+
+    - kind: OAuthInput
+      id: WW9ta1
+      text: Login
+
+    - kind: HttpRequestAction
+      id: ZM1SWz
+      displayName: Fetch Ingestion Errors PreviewService
+      method: Post
+      url: https://orgname.crm.dynamics.com/api/data/v9.0/msdyn_fetchIngestionErrorsPreviewService
+      headers:
+        Authorization: =System.User.AccessToken
+
+      body:
+        kind: JsonRequestContent
+        content: |-
+          =JSON({
+            connectionId: Topic.ConnectionId,
+            connectionRefreshId: Topic.ConnectionRefreshId,
+            ingestionErrorGroupCode: "All",
+            pageNumber: 1
+          })
+
+      response: Topic.IngestionErrors
+      responseSchema:
+        kind: Record
+        properties:
+          @odata.context: String
+          output: String
+
+    - kind: HttpRequestAction
+      id: sCxB7f
+      displayName: HTTP Request -Extract Errors
+      method: Post
+      url: =Concatenate("<<FunctionUrl>>&ReferenceDataString=",Topic.ReferenceData.text)
+      body:
+        kind: RawRequestContent
+        content: =Topic.IngestionErrors.output
+
+      response: Topic.FilteredIngestionErros
+      responseSchema: String
+
+    - kind: SendActivity
+      id: sendActivity_Odvpaw
+      activity: It's taking us a bit longer  to match and fetch the relevant data for you. Kindly wait.
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_OImXxg
+      input:
+        binding:
+          text: =Topic.FilteredIngestionErros
+
+      output:
+        binding:
+          ingestiondisplay: Topic.IngestionDisplay
+          ingestionerrlist: Topic.IngestionErrList
+
+      flowId: 9378fee0-1974-ef11-a670-6045bd59152a
+
+    - kind: ParseValue
+      id: YeHDiW
+      variable: Topic.IngestionErrParsed
+      valueType:
+        kind: Record
+        properties:
+          name:
+            type:
+              kind: Table
+              properties:
+                Value: String
+
+      value: =Topic.IngestionErrList
+
+    - kind: Question
+      id: question_Z0ILdT
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.UserIngestionErr
+      prompt: "Please check details of your ingestion errors and pick the one you want to investigate further:"
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Topic.IngestionErrParsed.name
+
+    - kind: SetVariable
+      id: setVariable_PShgeq
+      variable: Topic.IsRefFound
+      value: =If(StartsWith(Topic.UserIngestionErr,"Reference value found"),"true","false")
+
+    - kind: ConditionGroup
+      id: conditionGroup_5eVaSu
+      conditions:
+        - id: conditionItem_ibLjIv
+          condition: =Topic.IsRefFound = """false"""
+          displayName: If reference found
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_7ejdYO
+          activity: The Reference data is already in the system. Please run the import again.
+
+        - kind: GotoAction
+          id: MmucuI
+          actionId: question_9J3RBm
+
+    - kind: Question
+      id: question_jm3rT6
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.UserResolution
+      prompt: There are 2 options to resolve the above errors. Please choose how you would wish to proceed
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          items:
+            - id: Insert your organisation's reference data as a new record in the system
+              displayName: Insert your organisation's reference data as a new record in the system
+
+            - id: Change your input activity data to reflect the reference data in the system
+              displayName: Change your input activity data to reflect the reference data in the system
+
+    - kind: ConditionGroup
+      id: conditionGroup_ygWoej
+      conditions:
+        - id: conditionItem_mlQ89f
+          condition: =Topic.UserResolution = 'msdyn_sustainabilityCopilot.topic.Ingestionerrorresolver.main.question_jm3rT6'.'Insert your organisation''s reference data as a new record in the system'
+          actions:
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_hYVu1h
+              input:
+                binding:
+                  text: =Topic.FilteredIngestionErros
+                  text_1: =Topic.UserIngestionErr
+
+              output:
+                binding:
+                  response: Topic.Response
+
+              flowId: 20bc8f26-c474-ef11-a671-000d3a1fccff
+
+            - kind: SendActivity
+              id: sendActivity_xJHTmj
+              activity: "{Topic.Response}"
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_jxOZgb
+          activity: Please change the input activity data to match the reference data in the system.
+
+    - kind: Question
+      id: question_9J3RBm
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.UserToContinue
+      prompt: Would you like to resolve another error message in the error list for this import?
+      entity: BooleanPrebuiltEntity
+
+    - kind: ConditionGroup
+      id: conditionGroup_YJyJcr
+      conditions:
+        - id: conditionItem_oh1trm
+          condition: =Topic.UserToContinue = true
+          actions:
+            - kind: GotoAction
+              id: CzdGoL
+              actionId: question_Z0ILdT
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_C2db1j
+          activity: Please ensure to run the import again now. Thank you for using Microsoft Sustainability manager Ingestion error resolver.
+
+    - kind: CancelAllDialogs
+      id: Ywa4fN

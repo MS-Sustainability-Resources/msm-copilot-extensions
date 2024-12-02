@@ -1,0 +1,65 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "product-sales-api",
+        "version": "1.0",
+        "description":"This API provides sales data for products in Contoso Orgnaisation"
+    },
+    "servers": [
+    {
+      "url": "https://webapp-products-api-gpdmfyawgkbaeyay.eastus2-01.azurewebsites.net/",
+      "description": "Production server"
+    }
+  ],
+    "paths": {
+        "/products": {
+            "get": {
+                "tags": [
+                    "product-sales-api"
+                ],
+                "operationId": "GetProducts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductSales"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ProductSales": {
+                "type": "object",
+                "properties": {
+                    "productname": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "salesrevenue": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "owningteam": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    }
+}
