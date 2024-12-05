@@ -32,6 +32,6 @@ Please ensure you have followed the general Pre-requisites [here](https://github
 
 ## Enhancements & Finetuning 
 1. Customize Bing search for your needs
-2.		For letting copilot know when to pick this Topic:  You can go to the topic ‘Sustainability Guide’ and modify the description/trigger phrases in the Trigger of the topic.
-
+2.  For letting copilot know when to pick this Topic:  You can go to the topic ‘Sustainability Guide’ and modify the description/trigger phrases in the Trigger of the topic.
+   
 
