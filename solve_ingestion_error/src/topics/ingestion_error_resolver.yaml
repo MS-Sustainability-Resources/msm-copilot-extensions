@@ -118,13 +118,13 @@ beginDialog:
     - kind: SetVariable
       id: setVariable_PShgeq
       variable: Topic.IsRefFound
-      value: =If(StartsWith(Topic.UserIngestionErr,"Reference value found"),"true","false")
+      value: =If(StartsWith(Topic.UserIngestionErr,"Reference value found"),true,false)
 
     - kind: ConditionGroup
       id: conditionGroup_5eVaSu
       conditions:
         - id: conditionItem_ibLjIv
-          condition: =Topic.IsRefFound = """false"""
+          condition: =Topic.IsRefFound = false
           displayName: If reference found
 
       elseActions:
