@@ -3,9 +3,13 @@
 Customers often need to configure custom emission factor libraries from PDF files and Excel. This use case demonstrates how Power Automate Action and AI prompts can be utilized to read PDF tables and configure a custom factor library in Microsoft Sustainability Manager (MSM). By creating a new flow in Power Automate that connects to the desired PDF or Excel file and using the AI Builder action to extract data from the tables, users can map the extracted data to MSM emission factor libraries. 
 Sample Query: I want to import custom emission factor library into Microsoft Sustainability Manager?
 
-## Pre-Requisite
+## Pre-Requisites
 1.	Please ensure you have followed the general Pre-requisites here.
 2.	Turn on Generative Orchestration for an agent- Orchestrate agent behavior with generative AI (preview) - Microsoft Copilot Studio | Microsoft Learn
+
+## High Level Flow
+
+![image](https://github.com/user-attachments/assets/4131271a-1c28-4002-92be-ed03cec8e633)
 
 ## Implementation guidance
 ### I.	Import Power Automate flow:

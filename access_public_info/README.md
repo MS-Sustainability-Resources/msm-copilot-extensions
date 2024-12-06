@@ -1,11 +1,13 @@
 # Extend MSM Copilot to access the latest in public docs using custom topic and Bing Custom search
-## UseCase
-Use Case: Bringing latest Public Documentation into Microsoft Sustainability Manager Copilot
-In this use case, we explore how the MSM Copilot can be extended to seamlessly integrate and search the latest public documentation, providing users with comprehensive and up-to-date information directly within the Microsoft Sustainability Manager. This ensures that users have access to critical knowledge without leaving the application, enhancing their productivity and decision-making capabilities.
-- Query 1: What is the architecture of Microsoft sustainability manager?
-- Query 2: What are the latest features released in Nov2024 for Microsoft sustainability manager?
+## Use Case
+Use Case: Microsoft Sustainability Manager(MSM) Copilot to answer prompts based on latest public product documentation
 
-## Pre-Requisite
+In this use case, we explore how the MSM Copilot can be extended to seamlessly integrate and search the latest public documentation, providing users with comprehensive and up-to-date information directly within the Microsoft Sustainability Manager. This ensures that users have access to critical knowledge without leaving the application, enhancing their productivity and decision-making capabilities.
+
+- Prompt 1: What is the architecture of Microsoft Sustainability Manager?
+- Prompt 2: What are the latest features released in November 2024 for Microsoft Sustainability Manager?
+ 
+## Pre-requisites
 Please ensure you have followed the general Pre-requisites [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/blob/main/README.md#pre-requisite).
 
 ## High-level flow
