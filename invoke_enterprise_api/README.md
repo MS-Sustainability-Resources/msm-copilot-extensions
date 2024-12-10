@@ -9,7 +9,7 @@ This use case demonstrates how MSM Copilot can harness the power of enterprise A
 1.	Please ensure you have followed the general Pre-requisites here.
 2.	[Turn on Generative Orchestration for an agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-generative-actions#turn-on-generative-orchestration-for-an-agent)
 
-## High-Level flow
+## High Level flow
 <img width="703" alt="image" src="https://github.com/user-attachments/assets/e6622a64-e96d-4044-b4d1-1e00c45bf444">
 
 
