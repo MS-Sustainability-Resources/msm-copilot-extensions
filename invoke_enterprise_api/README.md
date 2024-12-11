@@ -6,7 +6,7 @@ This use case demonstrates how MSM Copilot can harness the power of enterprise A
  - Sample Query: what is sales revenue for laptops in Contoso?
 
 ## Pre-Requisite
-1.	Please ensure you have followed the general Pre-requisites here.
+1.	Please ensure you have followed the general Pre-requisites [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/blob/main/README.md#pre-requisite).
 2.	[Turn on Generative Orchestration for an agent](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-generative-actions#turn-on-generative-orchestration-for-an-agent)
 
 ## High Level flow
