@@ -9,6 +9,10 @@ When importing data into Microsoft Sustainability Manager, users face errors due
 ## Pre-Requisite
 Please ensure you have followed the general Pre-requisites [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/blob/main/README.md#pre-requisite).
 
+## High Level flow
+<img width="722" alt="image" src="https://github.com/user-attachments/assets/c04c2810-c966-4adc-a3a6-c7fb27777b4d">
+
+
 ## Implementation guidance
 ### I.	Add topics:
 1.	In ‘Sustainability Copilot Bot’, Add a new topic.
@@ -36,23 +40,27 @@ c.	Client Secret- Copy the Client Secret value copied in previous step.
 d.	Scope- Give the value ‘profile openid https://org5231f668.crm.dynamics.com//.default’
 
 ### V.	 Deploy Azure functions
-1.	There is custom Azure functions code present to format and filter the list of ingestion errors returned by the API call in table format. This is under /solve_ingestion_error/src/azure_function/filter-ingestion-errors.
-2.	Navigate to the code and deploy it to Azure Functions. You can choose the Azure Functions Consumption Sku. You can use any of the methods for deployment. Azure CLI , Visual Studio Code publish, Visual Studio publish
-3.	Copy the deployed Azure function url
+1.	There is custom Azure functions code present to format and filter the list of ingestion errors returned by the API call in table format. This is under [/solve_ingestion_error/src/azure_function/filter-ingestion-errors](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/tree/main/solve_ingestion_error/src/azure_function/filter-ingestion-errors) .
+2.	Navigate to the code and deploy it to Azure Functions. You can choose the Azure Functions Consumption Sku. You can use any of the methods for deployment.
+     - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/functionapp/deployment/source#az-functionapp-deployment-source-config-zip)
+     - [Visual Studio Code publish](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=node-v4%2Cpython-v2%2Cisolated-process%2Cquick-create&pivots=programming-language-csharp#republish-project-files)
+     - [Visual Studio publish](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-vs?pivots=isolated#publish-to-azure)
+4.	Copy the deployed Azure function url
    
 ### VI.	Modify topic ‘Ingestion error resolver’
 1.	In Copilot Studio, Go to the Topic – ‘Ingestion error resolver’.
-2.	 In the HTTP call ‘Fetch Ingestion Errors Service’. Replace your orgname in <<orgname>>.crm.dynamics.com in the HTTP url.
-3.	In the HTTP call ‘HTTP Request -Extract Errors’. Replace your Azure Function url from previous step in  place of <<FunctionUrl>> in the HTTP url.
-4.	Publish after all your changes are done, to see your changes in MSM copilot.
+2.	In the HTTP call ‘Fetch Ingestion Errors Service’. Replace your orgname in '[orgname].crm.dynamics.com' in the HTTP url.
+3.	In the HTTP call ‘HTTP Request -Extract Errors’. Replace your Azure Function url from previous step in  place of 'FunctionUrl' in the HTTP url.
+4.	Save and publish all your changes , to see your changes in MSM copilot.
    
 ### VII.	Test:
 2.	Test with below sample query and choose options when provided with the same.
-I want to resolve import errors in Microsoft sustainability manager.
+- I want to resolve import errors in Microsoft sustainability manager.
 
 ## Enhancements & Finetuning
-1.	For letting copilot know when to pick this Topic:  You can go to the topic ‘MSM error Guide’ and modify the description/trigger phrases in the Trigger of the topic.
-2.	This repo implements guided solving only for Import errors where reference data is missing. We can extend it further to solve error scenarios. We can use custom topics, power automate flows, AI prompts to do so as demonstrated in this use case.
+1. Extend this to solve other error scenarios.
+2. Modify the topic to change options & flow for the user.
+3. Modify the description/trigger phrases in the Trigger of the topic
 
 ## Limitations
-1.	Some of the content is AI generated and its good to verify the reference data before deciding to insert.
+1. Responses & Reference matches are found by AI, some times there may be a delay in fetching the responses.
