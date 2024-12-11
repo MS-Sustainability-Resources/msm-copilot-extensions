@@ -17,8 +17,9 @@ Please ensure you have followed the general Pre-requisites [here](https://github
 ### I.	Add topics:
 1.	In ‘Sustainability Copilot Bot’, Add a new topic.
 2.	Open the ‘code editor’ in the topic 
- 
-3.	Copy paste the code from MSM_error_guide.yaml file given in this source code here to your topic.
+ ![image](https://github.com/user-attachments/assets/67dbb116-265b-41b8-bf35-fb93fd44017c)
+
+3.	Copy paste the code from MSM_error_guide.yaml file given in this source code [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/tree/main/solve_ingestion_error/src/topics) to your topic.
 4.	Repeat the steps to add another topic - ingestion_error_resolver.yaml
 
 ### II.	Import flows & AI models
