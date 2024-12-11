@@ -1,13 +1,13 @@
 # Solve ingestion errors with MSM Copilot using custom topics and actions
 ## Use Case
 When importing data into Microsoft Sustainability Manager, users face errors due to missing reference data. Traditionally, resolving these errors requires navigating through various screens to identify and rectify the missing or incorrect data. Now we can extend MSM copilot to solve such errors in their chat, with AI helping them with similar reference data found in system. This would help the users more easily identify whether they need to insert their data or change the incoming data.
-Benefits
-•	Efficiency: Users can resolve data import errors more quickly by following the streamlined guidance provided by the MSM Copilot, reducing the time spent navigating multiple screens.
-•	Accuracy: The chat-based guidance helps users follow the correct steps to resolve errors, minimizing the risk of additional mistakes.
-Sample Query: I want to resolve import errors in Microsoft sustainability manager.
+### Benefits
+  - Efficiency: Users can resolve data import errors more quickly by following the streamlined guidance provided by the MSM Copilot, reducing the time spent navigating multiple screens.
+  - Accuracy: The chat-based guidance helps users follow the correct steps to resolve errors, minimizing the risk of additional mistakes.
+- Sample Query: I want to resolve import errors in Microsoft sustainability manager.
 
 ## Pre-Requisite
-Please ensure you have followed the general Pre-requisites here.
+Please ensure you have followed the general Pre-requisites [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/blob/main/README.md#pre-requisite).
 
 ## Implementation guidance
 ### I.	Add topics:
@@ -18,18 +18,18 @@ Please ensure you have followed the general Pre-requisites here.
 4.	Repeat the steps to add another topic - ingestion_error_resolver.yaml
 
 ### II.	Import flows & AI models
-1.	Import ‘Sustainability Copilot Ingestion Error Resolver’ Solution file from the source folder (solve_ingestion_error\src\solution\SustainabilityCopilotIngestionErrorResolver.zip). Ref- Import solutions - Power Apps | Microsoft Learn. This imports all the Power automate flows used in this use case.
+1.	Import ‘Sustainability Copilot Ingestion Error Resolver’ Solution file from the source folder (solve_ingestion_error\src\solution\SustainabilityCopilotIngestionErrorResolver.zip). Ref- [Import solutions](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/import-update-export-solutions)
 2.	The solution has 4 flows and 3 AI prompts necessary for this use case.
-3.	In Powerautomate connections, fix connection for the flows - Manage connections in Power Automate - Power Automate | Microsoft Learn
+3.	In Powerautomate connections, fix connection for the flows - [Manage connections](https://learn.microsoft.com/en-us/power-automate/add-manage-connections#update-a-connection)
 
 ### III.	Setup authentication
-1.	We would need to setup authentication for making Dataverse API calls from our topic. For this setup an Azure App registration - Tutorial: Register an app with Microsoft Entra ID (Microsoft Dataverse) - Power Apps | Microsoft Learn .Make sure you have granted permission to Dataverse API as described.
-2.	In the app registration -Add the redirect URI. ’https://token.botframework.com/.auth/web/redirect’.   Ref- Quickstart: Register an app in the Microsoft identity platform - Microsoft identity platform | Microsoft Learn
-3.	Go to Manage’Certificates & Secrets’. Create a new client secret and copy and keep the value for use in the next step.
+1.	We would need to setup authentication for making Dataverse API calls from our topic. For this setup an Azure App registration - [Tutorial: Register an app with Microsoft Entra ID  - Power Apps](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/walkthrough-register-app-azure-active-directory).Make sure you have granted permission to Dataverse API as described.
+2.	In the app registration -Add the redirect URI. ’https://token.botframework.com/.auth/web/redirect’.   Ref- [Quickstart: Register an app in the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate#add-a-redirect-uri) 
+3.	Go to Manage -> ’Certificates & Secrets’. Create a new client secret and copy and keep the value for use in the next step.
 
 ### IV.	 Modify Copilot’s authentication
 1.	Copilot’s Authentication needs to be set up with the app registration created in previous step to enable copilot to call Dataverse API’s
-2.	Go to the Copilot Settings Security  Authentication  Authenticate Manually.
+2.	Go to the Copilot -> Settings  -> Security  -> Authentication -> Authenticate Manually.
 a.	Service provider – Select  ‘Azure Active Directory v2’.
 b.	Client Id -Copy the client id in the app registration created in previous step.
 c.	Client Secret- Copy the Client Secret value copied in previous step.
