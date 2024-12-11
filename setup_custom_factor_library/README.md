@@ -25,9 +25,10 @@ Here we are configuring a Power automate flow as an action and describing the fl
    	2.	Factor Library Name: Please give the custom factory library name prefix
    	3.	Reference Data Type: Please give the plural name of the table of the reference data type that you would like to use for factor mappings
    	4.	PDF File Name: Please give the NGER PDF file name uploaded in your sharepoint. Please ensure that the PDF file has one page of emission factor that you wish to upload to an emission factor library
+  - Save and Publish, to see your changes in MSM copilot.
 ### III.	Test:
 -	Test with below sample query and give the required inputs asked.
-    a.I want to import custom emission factor library into Microsoft Sustainability Manager?
+    - a.I want to import custom emission factor library into Microsoft Sustainability Manager?
 - You may need to connect to authorise during a session
 
 ## Alternate ways to implement
