@@ -15,6 +15,7 @@ Customers often need to configure custom emission factor libraries from PDF file
 ### I.	Import Power Automate flow:
   - Import ‘Custom Emission Factor Library’ Solution file from the source folder(setup_custom_factor_library\src\solution\CustomEmissionFactorLibrary.zip). Ref [here](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/import-update-export-solutions)
   - In Powerautomate connections, [fix Dataverse connections used for the flow](https://learn.microsoft.com/en-us/power-automate/add-manage-connections#update-a-connection)
+  - Open https://make.powerautomate.com/ and check the imported flow, if the flow is disabled, edit the flow. Fix connection reference errors.Save and publish the flow again.
   - This flow reads the PDF file from sharepoint. Configure the sharepoint and upload the sample PDF file in sharepoint. Please upload one- or two-pages PDF which has the emission factor library details. The sample NGER PDFs used can be found [here](https://github.com/MS-Sustainability-Resources/msm-copilot-extensions/tree/main/setup_custom_factor_library). Please ensure the flow points to this sharepoint.
 ### II.	Use custom connector actions with agents (preview)
 Here we are using the [actions](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-plugin-actions#add-an-action) to respond to users automatically, using generative orchestration ( a preview feature announced in Nov24 ignite). Please ensure generative orchestration setting is switched on as given in pre-requisite.
