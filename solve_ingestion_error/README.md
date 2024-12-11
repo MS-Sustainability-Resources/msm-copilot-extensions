@@ -26,6 +26,7 @@ Please ensure you have followed the general Pre-requisites [here](https://github
 1.	Import ‘Sustainability Copilot Ingestion Error Resolver’ Solution file from the source folder (solve_ingestion_error\src\solution\SustainabilityCopilotIngestionErrorResolver.zip). Ref- [Import solutions](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/import-update-export-solutions)
 2.	The solution has 4 flows and 3 AI prompts necessary for this use case.
 3.	In Powerautomate connections, fix connection for the flows - [Manage connections](https://learn.microsoft.com/en-us/power-automate/add-manage-connections#update-a-connection)
+4.	Open https://make.powerautomate.com/ and check the imported flows, if any flow is disabled, edit the flow. Fix connection reference errors.Save and publish the flow again.
 
 ### III.	Setup authentication
 1.	We would need to setup authentication for making Dataverse API calls from our topic. For this setup an Azure App registration - [Tutorial: Register an app with Microsoft Entra ID  - Power Apps](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/walkthrough-register-app-azure-active-directory).Make sure you have granted permission to Dataverse API as described.
